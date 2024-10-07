@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+source goxx-env
+
+if command -v "$AR" >/dev/null 2>/dev/null; then
+  export AR=$AR
+fi
+if command -v "$CC" >/dev/null 2>/dev/null; then
+  export CC=$CC
+fi
+if command -v "$CXX" >/dev/null 2>/dev/null; then
+  export CXX=$CXX
+fi
+if command -v "$PKG_CONFIG" >/dev/null 2>/dev/null; then
+  export PKG_CONFIG=$PKG_CONFIG
+fi
+
+exec cmake "$@"
