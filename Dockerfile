@@ -2,6 +2,9 @@ FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3-debian AS osxcross
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
 
 FROM --platform=$BUILDPLATFORM debian:bookworm AS base
+ARG TAGLIB_VERSION=2.0.2
+ARG TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
+
 RUN apt-get update && apt-get install -y clang lld cmake git
 # copy xx scripts to your build stage
 COPY --from=xx / /
@@ -10,8 +13,6 @@ ARG TARGETPLATFORM
 # Set working directory
 
 FROM --platform=$BUILDPLATFORM base AS source
-ARG TAGLIB_VERSION=2.0.2
-ARG TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
 RUN cd / && \
     git clone https://github.com/taglib/taglib.git taglib-src && \
     cd taglib-src && \
@@ -21,10 +22,7 @@ RUN cd / && \
     find . -name .git | xargs rm -rf
 
 FROM --platform=$BUILDPLATFORM base AS build
-
 RUN xx-apt install -y binutils gcc g++ libc6-dev zlib1g-dev
-
-ARG TAGLIB_VERSION
 ENV TABLIB_BUILD_OPTS="-DCMAKE_BUILD_TYPE=Release -DWITH_MP4=ON -DWITH_ASF=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF"
 
 COPY --from=source /taglib-src /taglib-src
