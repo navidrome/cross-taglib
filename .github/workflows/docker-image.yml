@@ -24,12 +24,12 @@ jobs:
 
     - uses: actions/checkout@v4
 
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Login to GitHub Container Registry
+#      uses: docker/login-action@v3
+#      with:
+#        registry: ghcr.io
+#        username: ${{ github.actor }}
+#        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract metadata for Docker
       id: meta
@@ -46,7 +46,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: .github/workflows/pipeline.dockerfile
+        file: Dockerfile
         platforms: ${{ matrix.platform }}
 #        push: true
         outputs: |
@@ -57,6 +57,12 @@ jobs:
           TAGLIB_VERSION=2.0.2
           TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
           RELEASE_VERSION=0
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: taglib-2.0.2-1.${{ matrix.platform }}.zip
+        path: ./dist
+        retention-days: 7
 
 #    - name: Build the Docker image
 #      run: |
