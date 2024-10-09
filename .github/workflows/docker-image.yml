@@ -60,7 +60,7 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: taglib-2.0.2-1.${{ matrix.platform }}.zip
+        name: taglib-2.0.2-1.${{ matrix.platform.replace('/', '-') }}.zip
         path: ./dist
         retention-days: 7
 
