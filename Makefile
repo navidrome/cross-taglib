@@ -1,9 +1,6 @@
 include .versions
 
-build: taglib/README.md
-	if [ ! taglib/README.md ]; then \
-		./download-taglib.sh; \
-	fi
+build:
 	docker build \
 		--platform "linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7,linux/386" \
 		--build-arg TAGLIB_VERSION=${TAGLIB_VERSION} \
@@ -14,17 +11,9 @@ build: taglib/README.md
 
 #		--platform "linux/amd64,linux/arm64,linux/arm/v6,linux/arm/v7,linux/386,darwin/arm64,darwin/amd64,windows/amd64,windows/386" \
 
-taglib/README.md:
-	./download-taglib.sh
-
-
 dist: build
 	./make-dist.sh
 .PHONY: dist
-
-download:
-	./download-taglib.sh
-.PHONY: download
 
 update:
 	./latest-version.sh > .versions
