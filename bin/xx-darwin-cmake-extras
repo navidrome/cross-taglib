@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+if [ "$(xx-info os)" = "darwin" ]; then
+    echo "-DCMAKE_RANLIB=/osxcross/bin/x86_64-apple-darwin20.4-ranlib -DCMAKE_AR=/osxcross/bin/x86_64-apple-darwin20.4-ar"
+fi
