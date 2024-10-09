@@ -32,16 +32,19 @@ RUN --mount=from=osxcross,target=/xx-sdk,src=/osxcross/SDK,rw \
     echo "Build static TagLib $TAGLIB_VERSION for $TARGETPLATFORM" && \
     cd /taglib-src && \
     cmake $TAGLIB_BUILD_OPTS  \
-        $(xx-clang --print-cmake-defines) \
-        $(xx-darwin-cmake-extras) \
-        -DCMAKE_INSTALL_PREFIX=/taglib $TABLIB_BUILD_OPTS \
+        -DCMAKE_CROSSCOMPILING=TRUE \
+        -DCMAKE_C_COMPILER=$(xx-info)-gcc \
+        -DCMAKE_CXX_COMPILER=$(xx-info)-g++ \
+        $(xx-cmake-extras) \
+        -DCMAKE_INSTALL_PREFIX=/taglib \
     && make install
 
-# Verify if the artifact has been built for the correct platform
-RUN mkdir -p /tmp/archive \
+# Verify if the artifact has been built for the correct platform. Skip platforms not supported by xx-verify.
+RUN bash -c "[[ $(xx-info os) =~ (windows|freebsd) ]]" || \
+    (mkdir -p /tmp/archive \
     && cd /tmp/archive \
-    && ar -x /taglib/lib/libtag.a xmfile.cpp.o \
-    && xx-verify xmfile.cpp.o
+    && ar -x /taglib/lib/libtag.a \
+    && xx-verify xmfile.cpp.*)
 
 FROM scratch AS artifact
 COPY --from=build /taglib /
