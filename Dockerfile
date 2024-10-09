@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3 AS osxcross
+FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3-debian AS osxcross
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
 
 FROM --platform=$BUILDPLATFORM debian:bookworm AS base
@@ -28,7 +28,7 @@ ARG TAGLIB_VERSION
 ENV TABLIB_BUILD_OPTS="-DCMAKE_BUILD_TYPE=Release -DWITH_MP4=ON -DWITH_ASF=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF"
 
 COPY --from=source /taglib-src /taglib-src
-RUN  --mount=from=osxcross,target=/xx-sdk,src=/osxcross,rw \
+RUN  --mount=from=osxcross,target=/xx-sdk,src=/osxcross/SDK,rw \
     echo "Build static TagLib $TAGLIB_VERSION for $TARGETPLATFORM" && \
     cd /taglib-src && \
     cmake $TAGLIB_BUILD_OPTS  \
