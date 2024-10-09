@@ -58,9 +58,13 @@ jobs:
           TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
           RELEASE_VERSION=0
 
+    - name: Set filename
+      id: set-filename
+      run: echo "filename=taglib-2.0.2-1-${{ matrix.platform//\//- }}.zip" >> $GITHUB_ENV
+
     - uses: actions/upload-artifact@v4
       with:
-        name: taglib-2.0.2-1.${{ matrix.platform.replace('/', '-') }}.zip
+        name: ${{ env.filename }}
         path: ./dist
         retention-days: 7
 
