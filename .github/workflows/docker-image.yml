@@ -10,8 +10,8 @@ jobs:
   build:
     strategy:
      matrix:
-       platform: [ linux/amd64, linux/arm64 ]
-    #         platform: [ linux/amd64, linux/arm64, linux/arm/v5, linux/arm/v6, linux/arm/v7, linux/386, darwin/amd64, darwin/arm64, windows/amd64, windows/386 ]
+#       platform: [ linux/amd64, linux/arm64 ]
+       platform: [ linux/amd64, linux/arm64, linux/arm/v5, linux/arm/v6, linux/arm/v7, linux/386, darwin/amd64, darwin/arm64, windows/amd64, windows/386 ]
     runs-on: ubuntu-latest
     steps:
     - name: Set up QEMU
@@ -69,14 +69,3 @@ jobs:
         name: ${{ env.filename }}
         path: ./dist
         retention-days: 7
-
-#    - name: Build the Docker image
-#      run: |
-#        source .versions
-#        docker build . --file Dockerfile --tag ghcr.io/navidrome/cross-taglib:$(date +%s) \
-#          --build-arg TAGLIB_VERSION=${TAGLIB_VERSION}
-#          --build-arg TAGLIB_SHA=${TAGLIB_SHA} \
-#          --build-arg RELEASE_VERSION=${RELEASE_VERSION} \
-#          --output "./dist" \
-#          --target "artifact" .
-
