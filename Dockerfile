@@ -25,7 +25,7 @@ ARG TARGETPLATFORM
 RUN xx-apt install -y binutils gcc g++ libc6-dev zlib1g-dev
 
 # Build TagLib for the target platform
-ENV TABLIB_BUILD_OPTS="-DCMAKE_BUILD_TYPE=Release -DWITH_MP4=ON -DWITH_ASF=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF"
+ENV TAGLIB_BUILD_OPTS="-DCMAKE_BUILD_TYPE=Release -DWITH_MP4=ON -DWITH_ASF=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF"
 RUN --mount=from=osxcross,target=/osxcross,src=/osxcross,ro \
     echo "Build static TagLib $TAGLIB_VERSION for $TARGETPLATFORM" && \
     ln -s /osxcross/SDK /xx-sdk && \
