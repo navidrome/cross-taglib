@@ -62,29 +62,36 @@ jobs:
           TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
           RELEASE_VERSION=0
 
-    - name: Set filename
-      id: set-filename
+    - name: Sanitize platform name
+      id: set-platform
       run: |
         PLATFORM=$(echo ${{ matrix.platform }} | tr '/' '-')
-        echo "filename=taglib-2.0.2-1-$PLATFORM.zip" >> $GITHUB_ENV
+        echo "PLATFORM=$PLATFORM" >> $GITHUB_ENV
+
+    - name: Create artifact
+      id: create-artifact
+      run: |
+        mkdir -p ./dist/${{ env.PLATFORM }}
+        cp -r ./dist/* ./dist/${{ env.PLATFORM }}
+        tar -czf ./dist/taglib-${{ env.PLATFORM }}.tar.gz -C ./dist/${{ env.PLATFORM }} .
 
     - uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.filename }}
+        name: ${{ env.PLATFORM }}
         path: ./dist
         retention-days: 7
 
   release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
         path: ./dist
-        pattern: taglib-*
         merge-multiple: true
+
+    - run: ls -lR ./dist
 
     - name: Generate checksums
       run: |
@@ -92,6 +99,7 @@ jobs:
         sha256sum * > checksums.txt
 
     - name: Create Release
-      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v2
       with:
         files: ./dist/*
