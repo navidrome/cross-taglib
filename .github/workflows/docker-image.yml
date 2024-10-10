@@ -31,16 +31,16 @@ jobs:
 #        username: ${{ github.actor }}
 #        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Extract metadata for Docker
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        labels: |
-          maintainer=deluan
-        images: |
-          name=ghcr.io/${{ github.repository }}
-        tags: |
-          type=semver,pattern={{version}}
+#    - name: Extract metadata for Docker
+#      id: meta
+#      uses: docker/metadata-action@v5
+#      with:
+#        labels: |
+#          maintainer=deluan
+#        images: |
+#          name=ghcr.io/${{ github.repository }}
+#        tags: |
+#          type=semver,pattern={{version}}
 
     - name: Build and Push
       uses: docker/build-push-action@v5
@@ -52,7 +52,7 @@ jobs:
         outputs: |
           type=local,dest=./dist
         target: artifact
-        tags: ${{ steps.meta.outputs.tags }}
+#        tags: ${{ steps.meta.outputs.tags }}
         build-args: |
           TAGLIB_VERSION=2.0.2
           TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
