@@ -1,4 +1,4 @@
-include .versions
+include .version
 
 RELEASE_VERSION ?= 0
 PLATFORMS ?= linux/amd64,linux/arm64,linux/arm/v5,linux/arm/v6,linux/arm/v7,linux/386,darwin/amd64,darwin/arm64,windows/amd64,windows/386
@@ -18,8 +18,8 @@ dist: build
 .PHONY: dist
 
 update:
-	./latest-version.sh > .versions
-	git diff .versions
+	./latest-version.sh > .version
+	git diff .version
 .PHONY: update
 
 clean:

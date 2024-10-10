@@ -2,7 +2,7 @@
 
 set -e
 
-source .versions
+source .version
 RELEASE_VERSION=$1
 
 cd dist

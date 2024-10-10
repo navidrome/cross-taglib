@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-source .versions
+source .version
 
 # Latest TagLib version
 # GitHub repository in the format OWNER/REPO
