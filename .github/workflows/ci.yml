@@ -29,7 +29,10 @@ jobs:
 
     - name: Load version
       id: version
-      run: cat .versions >> $GITHUB_ENV
+      run: |
+        source .versions
+        echo "TAGLIB_VERSION=$TAGLIB_VERSION" >> $GITHUB_ENV
+        echo "TAGLIB_SHA=$TAGLIB_SHA" >> $GITHUB_ENV
 
     - name: Build
       uses: docker/build-push-action@v5
