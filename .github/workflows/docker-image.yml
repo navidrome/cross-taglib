@@ -46,21 +46,25 @@ jobs:
 #        tags: |
 #          type=semver,pattern={{version}}
 
-    - name: Build and Push
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: Dockerfile
-        platforms: ${{ matrix.platform }}
-#        push: true
-        outputs: |
-          type=local,dest=./dist
-        target: artifact
-#        tags: ${{ steps.meta.outputs.tags }}
-        build-args: |
-          TAGLIB_VERSION=2.0.2
-          TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
-          RELEASE_VERSION=0
+#    - name: Build and Push
+#      uses: docker/build-push-action@v5
+#      with:
+#        context: .
+#        file: Dockerfile
+#        platforms: ${{ matrix.platform }}
+##        push: true
+#        outputs: |
+#          type=local,dest=./output
+#        target: artifact
+##        tags: ${{ steps.meta.outputs.tags }}
+#        build-args: |
+#          TAGLIB_VERSION=2.0.2
+#          TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
+#          RELEASE_VERSION=0
+
+    - run: |
+        mkdir -p ./output
+        echo "Building for ${{ matrix.platform }}" > ./output/output.txt
 
     - name: Sanitize platform name
       id: set-platform
@@ -72,7 +76,7 @@ jobs:
       id: create-artifact
       run: |
         mkdir -p ./dist/${{ env.PLATFORM }}
-        cp -r ./dist/* ./dist/${{ env.PLATFORM }}
+        cp -r ./output/* ./dist/${{ env.PLATFORM }}
         tar -czf ./dist/taglib-${{ env.PLATFORM }}.tar.gz -C ./dist/${{ env.PLATFORM }} .
 
     - uses: actions/upload-artifact@v4
