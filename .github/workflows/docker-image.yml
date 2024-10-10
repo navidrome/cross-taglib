@@ -75,9 +75,7 @@ jobs:
     - name: Create artifact
       id: create-artifact
       run: |
-        mkdir -p ./dist/${{ env.PLATFORM }}
-        cp -r ./output/* ./dist/${{ env.PLATFORM }}
-        tar -czf ./dist/taglib-${{ env.PLATFORM }}.tar.gz -C ./dist/${{ env.PLATFORM }} .
+        tar -czf ./dist/taglib-${{ env.PLATFORM }}.tar.gz -C ./output .
 
     - uses: actions/upload-artifact@v4
       with:
