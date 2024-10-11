@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3-debian AS osxcross
-FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
+FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
 
-FROM --platform=$BUILDPLATFORM debian:bookworm AS base
+FROM --platform=$BUILDPLATFORM debian:bookworm-20240926-slim AS base
 ARG TAGLIB_VERSION=2.0.2
 ARG TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
 
