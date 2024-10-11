@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3-debian AS osxcross
+FROM --platform=$BUILDPLATFORM crazymax/osxcross:14.5-debian AS osxcross
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
 
 FROM --platform=$BUILDPLATFORM debian:bookworm-20240926-slim AS base
@@ -24,17 +24,18 @@ ARG TARGETPLATFORM
 RUN xx-apt install -y binutils gcc g++ libc6-dev zlib1g-dev
 
 # Build TagLib for the target platform
-RUN --mount=from=osxcross,target=/osxcross,src=/osxcross,ro <<EOT
+RUN --mount=from=osxcross,src=/osxcross,target=/osxcross,ro \
+    --mount=from=osxcross,src=/osxcross/SDK,target=/xx-sdk,ro <<EOT
     echo "Build static TagLib $TAGLIB_VERSION for $TARGETPLATFORM" && \
 
     TAGLIB_BUILD_OPTS="-DCMAKE_BUILD_TYPE=Release -DWITH_MP4=ON -DWITH_ASF=ON -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF"
     case "$(xx-info os)" in
         darwin)
+            AR=$(ls /osxcross/bin/x86_64-apple-darwin*-ar)
+            RANLIB=$(ls /osxcross/bin/x86_64-apple-darwin*-ranlib)
             TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS -DCMAKE_SYSTEM_NAME=Darwin"
             TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS $(xx-clang --print-cmake-defines)"
-            TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS -DCMAKE_AR=/osxcross/bin/x86_64-apple-darwin20.4-ar"
-            TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS -DCMAKE_RANLIB=/osxcross/bin/x86_64-apple-darwin20.4-ranlib"
-            mkdir -p /xx-sdk && ln -s /osxcross/SDK/MacOSX11* /xx-sdk/MacOSX11.1.sdk
+            TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS -DCMAKE_AR=$AR -DCMAKE_RANLIB=$RANLIB"
             ;;
         windows)
             TAGLIB_BUILD_OPTS="$TAGLIB_BUILD_OPTS -DCMAKE_SYSTEM_NAME=Windows"
