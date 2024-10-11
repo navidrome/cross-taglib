@@ -34,8 +34,16 @@ jobs:
         echo "TAGLIB_VERSION=$TAGLIB_VERSION" >> $GITHUB_ENV
         echo "TAGLIB_SHA=$TAGLIB_SHA" >> $GITHUB_ENV
 
+    - name: Set DOCKER_BUILD_SUMMARY
+      run: |
+        if [[ ${{ github.ref }} == refs/tags/v* ]]; then
+          echo "DOCKER_BUILD_SUMMARY=false" >> $GITHUB_ENV
+        else
+          echo "DOCKER_BUILD_SUMMARY=true" >> $GITHUB_ENV
+        fi
+
     - name: Build
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: Dockerfile
@@ -61,7 +69,7 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.PLATFORM }}
+        name: taglib-${{ env.PLATFORM }}
         path: ./dist
         retention-days: 7
 
@@ -74,6 +82,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: ./dist
+        pattern: taglib-*
         merge-multiple: true
 
     - run: ls -lR ./dist
