@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM crazymax/osxcross:11.3-debian AS osxcross
+FROM --platform=$BUILDPLATFORM crazymax/osxcross:14.5-debian AS osxcross
 FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
 
 FROM --platform=$BUILDPLATFORM debian:bookworm-20240926-slim AS base
