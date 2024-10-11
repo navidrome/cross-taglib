@@ -18,12 +18,13 @@ dist: build
 .PHONY: dist
 
 update:
-	./latest-version.sh > .version
-	git diff .version
+	@./latest-version.sh > .version
+	@git diff .version
+	@if [ -z "`git status -s .version`" ]; then echo "No changes. Latest is still $(TAGLIB_VERSION)"; fi
 .PHONY: update
 
 release:
-	@if [[ ! "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9]+.*$$ ]]; then echo "Usage: make release V=X.X.X-Y"; exit 1; fi
+	@if [[ ! "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9]+.*$$ ]]; then echo "Usage: make release v=X.X.X-Y"; exit 1; fi
 	git tag v${v}
 	git push origin v${v}
 .PHONY: release

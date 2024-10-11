@@ -1,9 +1,5 @@
 #!/bin/zsh
 
-source .version
-
-# Latest TagLib version
-# GitHub repository in the format OWNER/REPO
 REPO="taglib/taglib"
 
 # GitHub API URL for fetching tags

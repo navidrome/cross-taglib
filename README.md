@@ -29,10 +29,10 @@ the `make build` command with the `PLATFORMS` variable set to the desired platfo
 
 ### Tasks
 
-- `make build` - Will build for all supported platforms
-- `make build PLATFORMS=linux/amd64,darwin/arm64` - Will build for specific platforms
-- `make update` - Will update the TagLib version in the `.version` file. After updating, you should build locally to 
-   ensure everything is working, and then commit and push the changes.
+- `make build` - Build for all supported platforms
+- `make build PLATFORMS=linux/amd64,darwin/arm64` - Build for specific platforms
+- `make update` - Update the TagLib version in the `.version` file. After updating, you should build locally to 
+   ensure everything is working, and then commit and push the changed `.version` file.
 
 ### Release
 
