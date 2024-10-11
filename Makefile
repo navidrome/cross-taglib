@@ -22,6 +22,12 @@ update:
 	git diff .version
 .PHONY: update
 
+release:
+	@if [[ ! "${v}" =~ ^[0-9]+\.[0-9]+\.[0-9]+-[0-9]+.*$$ ]]; then echo "Usage: make release V=X.X.X-Y"; exit 1; fi
+	git tag v${v}
+	git push origin v${v}
+.PHONY: release
+
 clean:
 	rm -rf dist/*
 .PHONY: clean
