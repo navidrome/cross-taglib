@@ -35,7 +35,7 @@ jobs:
         echo "TAGLIB_SHA=$TAGLIB_SHA" >> $GITHUB_ENV
 
     - name: Build
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: Dockerfile
