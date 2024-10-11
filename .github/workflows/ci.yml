@@ -44,8 +44,6 @@ jobs:
 
     - name: Build
       uses: docker/build-push-action@v6
-      env:
-        DOCKER_BUILD_SUMMARY: ${{ env.DOCKER_BUILD_SUMMARY }}
       with:
         context: .
         file: Dockerfile
