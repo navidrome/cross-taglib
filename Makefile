@@ -18,8 +18,9 @@ dist: build
 .PHONY: dist
 
 update:
-	./latest-version.sh > .version
-	git diff .version
+	@./latest-version.sh > .version
+	@git diff .version
+	@if [ -z "`git status -s .version`" ]; then echo "No changes. Latest is still $(TAGLIB_VERSION)"; fi
 .PHONY: update
 
 release:
