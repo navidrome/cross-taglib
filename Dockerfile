@@ -1,7 +1,27 @@
-FROM --platform=$BUILDPLATFORM crazymax/osxcross:14.5-debian AS osxcross
-FROM --platform=$BUILDPLATFORM tonistiigi/xx:1.5.0 AS xx
+FROM --platform=$BUILDPLATFORM ghcr.io/crazy-max/osxcross:14.5-debian AS osxcross
 
-FROM --platform=$BUILDPLATFORM debian:bookworm-20240926-slim AS base
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/alpine:3.20 AS xx-build
+
+ENV XX_VERSION=1.5.0
+
+RUN apk add -U --no-cache git
+RUN git clone https://github.com/tonistiigi/xx && \
+    cd xx && \
+    git checkout v${XX_VERSION} && \
+    mkdir -p /out && \
+    cp src/xx-* /out/
+
+RUN cd /out && \
+    ln -s xx-cc /out/xx-clang && \
+    ln -s xx-cc /out/xx-clang++ && \
+    ln -s xx-cc /out/xx-c++ && \
+    ln -s xx-apt /out/xx-apt-get
+
+# xx mimics the original tonistiigi/xx image
+FROM scratch AS xx
+COPY --from=xx-build /out/ /usr/bin/
+
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:bookworm-20240926-slim AS base
 ARG TAGLIB_VERSION=2.0.2
 ARG TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
 
