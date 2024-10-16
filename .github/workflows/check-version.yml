@@ -1,0 +1,22 @@
+name: Check TagLib version
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 7 * * *'
+jobs:
+  update-translations:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'navidrome' }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: make update
+      - name: Show changes, if any
+        run: |
+          git status --porcelain
+          git diff
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: Update TagLib to latest version
+          title: Update TagLib to latest version
+          branch: update-taglib

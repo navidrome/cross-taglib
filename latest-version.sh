@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 REPO="taglib/taglib"
 
