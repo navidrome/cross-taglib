@@ -10,6 +10,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: ${{ startsWith(github.ref, 'refs/tags/v') && 'tag' || 'branch' }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     strategy:
