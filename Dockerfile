@@ -23,12 +23,15 @@ FROM scratch AS xx
 COPY --from=xx-build /out/ /usr/bin/
 
 FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:bookworm-20240926-slim AS base
-ARG TAGLIB_VERSION=2.0.2
-ARG TAGLIB_SHA=e3de03501ff66221d1f1f971022b248d5b38ba06
 
 # Install platform agnostic build dependencies
 RUN apt-get update && apt-get install -y clang lld cmake git
 COPY --from=xx / /
+
+# TagLib version and SHA. This should be passed as build args and usually comes from the .version file
+ARG TAGLIB_VERSION
+ARG TAGLIB_SHA
+RUN test -n "$TAGLIB_VERSION" || (echo "TAGLIB_VERSION and TAGLIB_SHA args are required. Try using `make build`" && exit 1)
 
 # Download TagLib source for specified version
 RUN cd / && \
