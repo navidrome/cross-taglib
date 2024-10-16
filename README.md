@@ -41,3 +41,6 @@ will build and release the binaries for all supported platforms.
 
 The version represents the TagLib version + a counter. For example, `v2.0.2-1` represents the first release based on 
 TagLib 2.0.2.
+
+The release workflow will create a new GitHub release with the binaries attached for each supported platform. 
+Check the [releases page](https://github.com/navidrome/cross-taglib/releases) for the latest version.
