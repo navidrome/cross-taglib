@@ -22,7 +22,7 @@ RUN cd /out && \
 FROM scratch AS xx
 COPY --from=xx-build /out/ /usr/bin/
 
-FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:bookworm-20241202-slim AS base
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:bookworm-20250224-slim AS base
 
 # Install platform agnostic build dependencies
 RUN apt-get update && apt-get install -y clang lld cmake git
