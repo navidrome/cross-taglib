@@ -4,7 +4,7 @@ on:
   schedule:
     - cron:  '0 7 * * *'
 jobs:
-  update-translations:
+  check-version:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'navidrome' }}
     steps:
