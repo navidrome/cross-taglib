@@ -1,9 +1,9 @@
 FROM --platform=$BUILDPLATFORM ghcr.io/crazy-max/osxcross:14.5-debian AS osxcross
 
-FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/alpine:3.20 AS xx-build
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/alpine:3.23 AS xx-build
 
-# v1.5.0
-ENV XX_VERSION=b4e4c451c778822e6742bfc9d9a91d7c7d885c8a
+# v1.9.0
+ENV XX_VERSION=a5592eab7a57895e8d385394ff12241bc65ecd50
 
 RUN apk add -U --no-cache git
 RUN git clone https://github.com/tonistiigi/xx && \
@@ -22,7 +22,7 @@ RUN cd /out && \
 FROM scratch AS xx
 COPY --from=xx-build /out/ /usr/bin/
 
-FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:bookworm-20241202-slim AS base
+FROM --platform=$BUILDPLATFORM public.ecr.aws/docker/library/debian:trixie-20260112-slim AS base
 
 # Install platform agnostic build dependencies
 RUN apt-get update && apt-get install -y clang lld cmake git
