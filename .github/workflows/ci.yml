@@ -71,7 +71,7 @@ jobs:
         mkdir -p ./dist
         tar -czf ./dist/taglib-${{ env.PLATFORM }}.tar.gz -C ./output .
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7
       with:
         name: taglib-${{ env.PLATFORM }}
         path: ./dist
